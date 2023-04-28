@@ -10,6 +10,7 @@ To build the project, make sure you have Maven installed and run the following c
 
 
 The project also requires a GitHub API token, which should be set as an environment variable called `GITHUB_TOKEN`.
+`export GITHUB_TOKEN=YOUR_GITHUB_TOKEN`
 (If you don't have one yet) - https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token
 
 Once you have the project built and the environment variable set, you can start the API with the following command:
