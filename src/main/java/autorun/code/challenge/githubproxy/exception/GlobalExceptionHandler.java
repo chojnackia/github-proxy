@@ -1,6 +1,7 @@
 package autorun.code.challenge.githubproxy.exception;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpMediaTypeNotAcceptableException;
@@ -15,7 +16,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = {HttpClientErrorException.class})
     public ResponseEntity<Object> handleClientException(HttpClientErrorException ex) {
         String message = ex.getMessage();
-        HttpStatus statusCode = ex.getStatusCode();
+        HttpStatusCode statusCode = ex.getStatusCode();
         ErrorResponse errorResponse = new ErrorResponse(statusCode.value(), message);
         return ResponseEntity.status(errorResponse.getStatus())
                 .contentType(MediaType.APPLICATION_JSON)

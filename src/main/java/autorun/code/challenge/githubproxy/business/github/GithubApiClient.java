@@ -6,7 +6,7 @@ import autorun.code.challenge.githubproxy.domain.github.RepositoryDomain;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
@@ -30,8 +30,8 @@ public class GithubApiClient {
                 .uri(url)
                 .headers(headers -> createHeaders())
                 .retrieve()
-                .onStatus(HttpStatus::is4xxClientError, response -> Mono.error(new HttpClientErrorException(response.statusCode())))
-                .onStatus(HttpStatus::is5xxServerError, response -> Mono.error(new HttpServerErrorException(response.statusCode())))
+                .onStatus(HttpStatusCode::is4xxClientError, response -> Mono.error(new HttpClientErrorException(response.statusCode())))
+                .onStatus(HttpStatusCode::is5xxServerError, response -> Mono.error(new HttpServerErrorException(response.statusCode())))
                 .bodyToMono(new ParameterizedTypeReference<List<RepositoryDomain>>() {
                 })
                 .block();
@@ -50,8 +50,8 @@ public class GithubApiClient {
                 .uri(url)
                 .headers(headers -> createHeaders())
                 .retrieve()
-                .onStatus(HttpStatus::is4xxClientError, response -> Mono.error(new HttpClientErrorException(response.statusCode())))
-                .onStatus(HttpStatus::is5xxServerError, response -> Mono.error(new HttpServerErrorException(response.statusCode())))
+                .onStatus(HttpStatusCode::is4xxClientError, response -> Mono.error(new HttpClientErrorException(response.statusCode())))
+                .onStatus(HttpStatusCode::is5xxServerError, response -> Mono.error(new HttpServerErrorException(response.statusCode())))
                 .bodyToMono(new ParameterizedTypeReference<List<BranchDomain>>() {
                 })
                 .block();
