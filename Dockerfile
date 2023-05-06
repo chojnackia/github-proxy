@@ -1,10 +1,14 @@
-FROM openjdk:17-jdk-slim-bullseye
+# Build stage
+FROM maven:3.8.3-openjdk-17 AS build
+WORKDIR /build
+COPY pom.xml .
+RUN mvn dependency:go-offline
+COPY src/ /build/src/
+RUN mvn clean package
 
+# Run stage
+FROM openjdk:17-jdk-slim-bullseye AS run
 WORKDIR /app
-COPY target/github-proxy-0.0.1-SNAPSHOT-jar-with-dependencies.jar app.jar
-
-# Expose port 8080
+COPY --from=build /build/target/github-proxy-0.0.1-SNAPSHOT-jar-with-dependencies.jar app.jar
 EXPOSE 8080
-
-# Run the JAR file
-ENTRYPOINT ["java", "-XX:+PrintFlagsFinal", "-XX:MaxRAMPercentage=70", "-Djava.security.egd=file:/dev/./urandom", "-cp", ".:app.jar", "autorun.code.challenge.githubproxy.GithubProxyApplication"]
+ENTRYPOINT ["java", "-XX:+UseContainerSupport", "-XX:MaxRAMPercentage=75", "-Djava.security.egd=file:/dev/./urandom", "-jar", "app.jar"]
